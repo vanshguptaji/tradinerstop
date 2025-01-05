@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { mockSearchResults } from '../constants/mock';
 // import {XIcon, SearchIcon} from '@heroicons/react/20/solid'
 import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import SearchResults from './SearchResults';
+import ThemeContext from '../context/ThemeContext';
 
 
-const  Search = () => {
+const Search = () => {
   const [input, setInput] = useState('');
   const [bestMatches, setBestMatches] = useState(mockSearchResults.result);
+  const { darkMode } = useContext(ThemeContext);
 
   const clear = () => {
     setInput('');
@@ -20,15 +22,16 @@ const  Search = () => {
 
   return (
     <div
-      className={`flex items-center my-4 border-2 rounded-md relative z-50 w-96 `}
-    >
+      className={`flex items-center my-4 border-2 rounded-md relative z-50 w-96 ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-neutral-200"
+        }`}    >
       <input
         type="text"
         value={input}
-        className={`w-full px-4 py-2 focus:outline-none rounded-md`}
+        className={`w-full px-4 py-2 focus:outline-none rounded-md ${darkMode ? "bg-gray-900" : null
+          }`}
         placeholder="Search stock..."
         onChange={(event) => setInput(event.target.value)}
-        onKeyPress = {(event) => {
+        onKeyPress={(event) => {
           if (event.key === "Enter") {
             updateBestMatches();
           }
@@ -41,7 +44,7 @@ const  Search = () => {
       )}
       <button
         onClick={updateBestMatches}
-        className="h-8 w-8 bg-indigo-600 rounded-md flex justify-center items-center m-1 p-2 transition duration-300 hover:ring-2 ring-indigo-400"
+        className="h-10 w-10 bg-indigo-600 rounded-md flex justify-center items-center m-1 p-2 transition duration-300 hover:ring-2 ring-indigo-400"
       >
         <MagnifyingGlassIcon className="h-4 w-4 fill-gray-100" />
       </button>

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { mockHistoricalData } from '../constants/mock'
 import { convertUnixTimeStampToDate } from '../helpers/date-helper';
 import { AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Area } from 'recharts';
 import Card from './Card';
 import ChartFIlter from './ChartFIlter';
 import { chartConfig } from '../constants/config';
+import ThemeContext from '../context/ThemeContext';
 
 function Chart() {
 
     const [data, setData] = useState(mockHistoricalData);
     const [filter, setFilter] = useState("1W");
+    const { darkMode } = useContext(ThemeContext);
 
     const formData = () => {
         return data.c.map((item, index) => {
@@ -38,12 +40,12 @@ function Chart() {
                         <linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1">
                             <stop
                                 offset="5%"
-                                stopColor="rgb(199 210 254)"
+                                stopColor={darkMode ? "#312e81" : "rgb(199 210 254)"}
                                 stopOpacity={0.8}
                             />
                             <stop
                                 offset="95%"
-                                stopColor="rgb(199 210 254)"
+                                stopColor={darkMode ? "#312e81" : "rgb(199 210 254)"}
                                 stopOpacity={0}
                             />
                         </linearGradient>
@@ -56,7 +58,10 @@ function Chart() {
                     />
                     <XAxis dataKey="date" />
                     <YAxis domain={["dataMin", "dataMax"]} />
-                    <Tooltip />
+                    <Tooltip
+                        contentStyle={darkMode ? { backgroundColor: "#111827" } : null}
+                        itemStyle={darkMode ? { color: "#818cf8" } : null}
+                    />
                 </AreaChart>
             </ResponsiveContainer>
         </Card>
